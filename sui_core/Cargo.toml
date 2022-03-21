@@ -25,6 +25,9 @@ ed25519-dalek = "1.0.1"
 scopeguard = "1.1.0"
 clap = { version = "3.1.8", features = ["derive"] }
 fdlimit = "0.2.1"
+curve25519-dalek = { version = "3", default-features = false }
+structopt = "0.3.26"
+log = "0.4.14"
 
 sui-adapter = { path = "../sui_programmability/adapter" }
 sui-framework = { path = "../sui_programmability/framework" }
