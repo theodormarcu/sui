@@ -168,6 +168,9 @@ pub enum SuiError {
     SubscriptionItemsDroppedError(u64),
     #[error("Subscription service closed.")]
     SubscriptionServiceClosed,
+    #[error("Checkpointing error: {}", error)]
+    CheckpointingError { error: String },
+
 
     // Move module publishing related errors
     #[error("Failed to load the Move module, reason: {error:?}.")]
