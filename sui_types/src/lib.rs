@@ -30,6 +30,7 @@ pub mod serialize;
 pub mod signature_seed;
 pub mod storage;
 pub mod waypoint;
+pub mod iblt;
 
 /// 0x1-- account address where Move stdlib modules are stored
 /// Same as the ObjectID
