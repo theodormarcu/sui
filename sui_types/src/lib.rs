@@ -33,6 +33,9 @@ pub mod signature_seed;
 pub mod storage;
 pub mod waypoint;
 
+#[path = "./unit_tests/utils.rs"]
+pub mod utils;
+
 /// 0x1-- account address where Move stdlib modules are stored
 /// Same as the ObjectID
 pub const MOVE_STDLIB_ADDRESS: AccountAddress = AccountAddress::ONE;
