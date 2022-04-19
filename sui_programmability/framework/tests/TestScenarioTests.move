@@ -262,45 +262,4 @@ module Sui::TestScenarioTests {
             assert!(id == TxContext::last_created_object_id(ctx), 0);
         };
     }
-
-    #[test]
-    #[expected_failure(abort_code = 100 /* ETRANSFER_SHARED_OBJECT */)]
-    fun test_freeze_then_transfer() {
-        let sender = @0x0;
-        let scenario = TestScenario::begin(&sender);
-        {
-            let obj = Object { id: TestScenario::new_id(&mut scenario), value: 100 };
-            Transfer::freeze_object(obj);
-        };
-        TestScenario::next_tx(&mut scenario, &sender);
-        {
-            let obj = TestScenario::take_object<Object>(&mut scenario);
-            // Transfer an immutable object, this won't fail right away.
-            Transfer::transfer(obj, copy sender);
-        };
-        TestScenario::next_tx(&mut scenario, &sender);
-        {
-            // while removing the object, test scenario will read the inventory,
-            // and discover that we transferred an immutable object.
-            let obj = TestScenario::take_object<Object>(&mut scenario);
-            TestScenario::return_object(&mut scenario, obj);
-        };
-    }
-
-    #[test]
-    #[expected_failure(abort_code = 101 /* EMUTATING_IMMUTABLE_OBJECT */)]
-    fun test_freeze_then_mutate() {
-        let sender = @0x0;
-        let scenario = TestScenario::begin(&sender);
-        {
-            let obj = Object { id: TestScenario::new_id(&mut scenario), value: 100 };
-            Transfer::freeze_object(obj);
-        };
-        TestScenario::next_tx(&mut scenario, &sender);
-        {
-            let obj = TestScenario::take_object<Object>(&mut scenario);
-            obj.value = 200;
-            TestScenario::return_object(&mut scenario, obj);
-        };
-    }
 }
