@@ -15,25 +15,19 @@ use std::borrow::Borrow;
 use std::convert::{TryFrom, TryInto};
 use std::fmt;
 
-
+use sha3::Digest;
 
 use crate::readable_serde::encoding::Base64;
 use crate::readable_serde::encoding::Hex;
 use crate::readable_serde::Readable;
-
-use crate::readable_serde::BytesOrBase64;
-use crate::readable_serde::BytesOrHex;
-
 
 use move_core_types::account_address::AccountAddress;
 use move_core_types::ident_str;
 use move_core_types::identifier::IdentStr;
 use opentelemetry::{global, Context};
 
-
 use serde_with::serde_as;
 use serde_with::Bytes;
-
 
 use sha3::Sha3_256;
 
@@ -160,9 +154,10 @@ pub struct TransactionDigest(
 #[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Serialize, Deserialize)]
 pub struct ObjectDigest(#[serde_as(as = "Readable<Base64, Bytes>")] pub [u8; 32]); // We use SHA3-256 hence 32 bytes here
 
+#[serde_as]
 #[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Serialize, Deserialize)]
 pub struct TransactionEffectsDigest(
-    #[serde(with = "BytesOrBase64")] pub [u8; TRANSACTION_DIGEST_LENGTH],
+    #[serde_as(as = "Readable<Base64, Bytes>")] pub [u8; TRANSACTION_DIGEST_LENGTH],
 );
 
 pub const TX_CONTEXT_MODULE_NAME: &IdentStr = ident_str!("TxContext");
