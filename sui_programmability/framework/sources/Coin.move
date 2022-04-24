@@ -8,6 +8,8 @@ module Sui::Coin {
     use Std::Errors;
     use Std::Vector;
 
+    friend Sui::SuiSystem;
+
     /// A coin of type `T` worth `value`. Transferrable
     struct Coin<phantom T> has key, store {
         id: VersionedID,
@@ -113,6 +115,18 @@ module Sui::Coin {
         value: u64, cap: &mut TreasuryCap<T>, ctx: &mut TxContext,
     ): Coin<T> {
         cap.total_supply = cap.total_supply + value;
+        Coin { id: TxContext::new_id(ctx), value }
+    }
+
+    /// A special function that can mint coin without increasing the supply
+    /// in the treasury cap. This can only be called by SuiSystem (friend) to mint
+    /// staking reward at epoch boundaries. This is safe because the reward
+    /// comes from gas charges during transactions.
+    public(friend) fun mint_sui_reward<T>(
+        _cap: &TreasuryCap<T>,
+        value: u64,
+        ctx: &mut TxContext,
+    ): Coin<T> {
         Coin { id: TxContext::new_id(ctx), value }
     }
 
