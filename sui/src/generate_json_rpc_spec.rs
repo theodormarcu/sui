@@ -1,3 +1,6 @@
+// Copyright (c) 2022, Mysten Labs, Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 use std::fs::File;
 use std::io::Write;
 
@@ -5,8 +8,7 @@ use clap::ArgEnum;
 use clap::Parser;
 use pretty_assertions::assert_str_eq;
 
-use sui::rpc_gateway::{RpcCallArg, RpcGatewayOpenRpc};
-use sui_types::json_schema::Base64;
+use sui::rpc_gateway::RpcGatewayOpenRpc;
 
 #[derive(Debug, Parser, Clone, Copy, ArgEnum)]
 enum Action {
